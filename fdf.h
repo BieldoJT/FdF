@@ -21,8 +21,12 @@ typedef struct s_mlx
 	t_img	*img;
 }	t_mlx;
 
+# define WIDTH 500
+# define HEIGHT 300
 
-
-
+//mlx_config.c
+void	mlx_creation(t_mlx *mlx);
+int		close_win(t_mlx *mlx);
+void	my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
 
 #endif

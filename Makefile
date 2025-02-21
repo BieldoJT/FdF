@@ -6,11 +6,12 @@ CC = cc
 
 CC_FLAGS = -Wall -Werror -Wextra
 
-MINILIBX_FLAGS = -Lminilibx-linux -lmlx_Linux -lX11 -lXext
+MINILIBX_FLAGS = -Lminilibx-linux -lmlx_Linux -lX11 -lXext -lm
 
 MINILIBX = make_minilibx
 
 SCRS =  main.c \
+		mlx_config.c \
 
 
 all: ${LIBFT} ${MINILIBX} ${NAME}

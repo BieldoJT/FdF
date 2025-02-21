@@ -1,67 +1,71 @@
 #include "fdf.h"
 
-void free_img(t_mlx *mlx)
+
+void	print_rectangle(t_mlx *mlx , double size_x, double size_y)
 {
-	mlx_destroy_image(mlx->mlx_ptr,mlx->img->ptr);
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (i < size_x)
+	{
+		my_mlx_pixel_put(mlx, 10 + i, 10, 0x00FF0000);
+		my_mlx_pixel_put(mlx, 10 + i, 10 + size_y, 0x00FF0000);
+		i++;
+	}
+	while (j < size_y)
+	{
+		my_mlx_pixel_put(mlx, 10, 10 + j, 0x00FF0000);
+		my_mlx_pixel_put(mlx, 10 + size_x, 10 + j, 0x00FF0000);
+		j++;
+	}
 
 }
-
-int	close_win(t_mlx *vars)
+//0x009800 verda
+void print_triangle(t_mlx *mlx, double base, double height)
 {
+	double	hip;
+	double	i;
+	double	x;
+	double	cosseno_x;
+	//double	cosseno_y;
 
-	mlx_destroy_window(vars->mlx_ptr, vars->mlx_win);
-	free_img(vars);
-	mlx_destroy_display(vars->mlx_ptr);
-	free(vars->mlx_ptr);
-	free(vars->img);
-	free(vars);
-	ft_printf("fechou");
-	exit(EXIT_SUCCESS);
-
-	return 0;
-
+	hip = hypot(base / 2, height);
+	cosseno_x = cos((base / 2) / hip);
+	//cosseno_y = cos(height / hip);
+	i = 0;
+	x = 0;
+	while (x <= (base / 2))
+	{
+		my_mlx_pixel_put(mlx, 200 + x, 200, 0x009800);
+		my_mlx_pixel_put(mlx, 200 + x, 200 - (i * cosseno_x), 0x009800);
+		i += 0.1;
+		x += 0.1;
+	}
+	while (x < base)
+	{
+		my_mlx_pixel_put(mlx, 200 + x, 200, 0x009800);
+		my_mlx_pixel_put(mlx, 200 + x, 200 - (i * cosseno_x), 0x009800);
+		i -= 0.1;
+		x += 0.1;
+	}
 }
 
-void	my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color)
+
+
+int	main (void)
 {
-	char	*dst;
-	t_img	*img;
+	t_mlx	*mlx;
 
-	img = mlx->img;
+	mlx = malloc(sizeof(t_mlx));
+	mlx_creation(mlx);
 
-	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel/8));
-
-	*(unsigned int *)dst = color;
-
-}
-
-
-int main ()
-{
-	t_mlx	*fdf_mlx;
-
-
-	fdf_mlx = malloc(sizeof(t_mlx));
-	fdf_mlx->img = malloc(sizeof(t_img));
-
-	fdf_mlx->mlx_ptr = mlx_init();
-	fdf_mlx->mlx_win = mlx_new_window(fdf_mlx->mlx_ptr,500,300,"my window");
-
-
-	fdf_mlx->img->ptr = mlx_new_image(fdf_mlx->mlx_ptr,500,300);
-
-	fdf_mlx->img->addr = mlx_get_data_addr(fdf_mlx->img->ptr, &fdf_mlx->img->bits_per_pixel, &fdf_mlx->img->line_length,&fdf_mlx->img->endian);
-
-	my_mlx_pixel_put(fdf_mlx, 5, 5, 0x00FF0000);
-
-
-
-
-
-
-
-	mlx_put_image_to_window(fdf_mlx->mlx_ptr, fdf_mlx->mlx_win, fdf_mlx->img->ptr, 0, 0);
-	mlx_hook(fdf_mlx->mlx_win,17,0,close_win, fdf_mlx);
-	mlx_loop(fdf_mlx->mlx_ptr);
+	//my_mlx_pixel_put(mlx, 5, 5, 0x00FF0000); // pixel put melhorado
+	print_rectangle(mlx , 50, 70);
+	print_triangle(mlx,50,200);
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->mlx_win, mlx->img->ptr, 0, 0);
+	mlx_hook(mlx->mlx_win,17,0,close_win, mlx);
+	mlx_loop(mlx->mlx_ptr);
 	return 0;
 }
