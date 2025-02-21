@@ -4,4 +4,25 @@
 # include "libraries/Libft/libft.h"
 # include "minilibx-linux/mlx.h"
 # include <math.h>
+
+typedef struct s_img
+{
+	void	*ptr;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_img;
+
+typedef struct s_mlx
+{
+	void	*mlx_ptr;
+	void	*mlx_win;
+	t_img	*img;
+}	t_mlx;
+
+
+
+
+
 #endif
